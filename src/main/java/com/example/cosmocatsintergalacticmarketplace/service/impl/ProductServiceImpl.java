@@ -47,6 +47,19 @@ public class ProductServiceImpl implements ProductService {
         products.removeIf(product -> product.getId().equals(productId));
     }
 
+    @Override
+    public Product updateProduct(Long productId, Product product) {
+        products.removeIf(product1 -> product1.getId().equals(productId));
+        Product newProduct =  Product.builder()
+                .id(productId)
+                .name(product.getName())
+                .description(product.getDescription())
+                .price(product.getPrice())
+                .build();
+        products.add(newProduct);
+        return newProduct;
+    }
+
 
     private List<Product> buildAllProductsMock() {
         return new ArrayList<>(List.of(

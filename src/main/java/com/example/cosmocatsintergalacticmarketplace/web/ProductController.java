@@ -39,6 +39,13 @@ public class ProductController {
         //TODO: URI
     }
 
+    @PutMapping("/{id}")
+    ResponseEntity<ProductEntry> updateProduct(@PathVariable Long id, @RequestBody @Valid ProductDto product) {
+        ProductEntry productEntry = productMapper.toProductEntry(productService.updateProduct(id, productMapper.toProduct(product)));
+        return ResponseEntity.created(URI.create("http://localhost:8080/api/v1/products/" + productEntry.getId())).body(productEntry);
+        //TODO: URI
+    }
+
     @DeleteMapping("/{id}")
     ResponseEntity<Object> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
