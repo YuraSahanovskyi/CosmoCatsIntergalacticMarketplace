@@ -49,7 +49,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProduct(Long productId, Product product) {
-        products.removeIf(product1 -> product1.getId().equals(productId));
+        if (!products.removeIf(product1 -> product1.getId().equals(productId))) {
+            throw new ProductNotFoundException(productId);
+        }
         Product newProduct =  Product.builder()
                 .id(productId)
                 .name(product.getName())
