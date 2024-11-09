@@ -38,4 +38,10 @@ public class ProductController {
         return ResponseEntity.created(URI.create("http://localhost:8080/api/v1/products/" + productEntry.getId())).body(productEntry);
         //TODO: URI
     }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<Object> deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
+    }
 }
