@@ -1,8 +1,6 @@
 package com.example.cosmocatsintergalacticmarketplace.dto;
 
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
@@ -21,6 +19,7 @@ public class ProductDto {
     @Size(max = 255, message = "Description cannot exceed 255 characters")
     String description;
 
+    @NotNull(message = "Price is mandatory")
     @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than zero")
     BigDecimal price;
 }
