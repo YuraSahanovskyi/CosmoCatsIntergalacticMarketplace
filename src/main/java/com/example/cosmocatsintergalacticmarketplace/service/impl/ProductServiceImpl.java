@@ -2,10 +2,12 @@ package com.example.cosmocatsintergalacticmarketplace.service.impl;
 
 import com.example.cosmocatsintergalacticmarketplace.domain.Product;
 import com.example.cosmocatsintergalacticmarketplace.service.ProductService;
+import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductAlreadyExistsException;
 import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,16 +28,22 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product createProduct(Product product) {
-        return Product.builder()
+        Product newProduct =  Product.builder()
                 .id(9L)
                 .name(product.getName())
                 .description(product.getDescription())
                 .price(product.getPrice())
                 .build();
+        if (products.contains(newProduct)) {
+            throw new ProductAlreadyExistsException(newProduct.getId());
+        }
+        products.add(newProduct);
+        return newProduct;
+
     }
 
     private List<Product> buildAllProductsMock() {
-        return List.of(
+        return new ArrayList<>(List.of(
                 Product.builder()
                         .id(1L)
                         .name("Anti-Gravity Yarn Ball")
@@ -84,7 +92,7 @@ public class ProductServiceImpl implements ProductService {
                         .description("A high-tech litter box that automatically cleans itself. No more stinky spaceships!")
                         .price(new BigDecimal("149.99"))
                         .build()
-        );
+        ));
     }
 
 }

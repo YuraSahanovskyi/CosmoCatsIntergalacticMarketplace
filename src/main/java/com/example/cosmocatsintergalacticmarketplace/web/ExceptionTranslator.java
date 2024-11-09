@@ -1,8 +1,7 @@
 package com.example.cosmocatsintergalacticmarketplace.web;
 
+import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductAlreadyExistsException;
 import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductNotFoundException;
-import jakarta.annotation.Nullable;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -26,6 +25,11 @@ public class ExceptionTranslator extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<Object> handleProductNotFoundException(ProductNotFoundException ex, WebRequest request) {
         return buildResponseEntity(HttpStatus.NOT_FOUND, ex.getMessage(), getRequestPath(request));
+    }
+
+    @ExceptionHandler(ProductAlreadyExistsException.class)
+    public ResponseEntity<Object> handleProductAlreadyExistsException(ProductAlreadyExistsException ex, WebRequest request) {
+        return buildResponseEntity(HttpStatus.CONFLICT, ex.getMessage(), getRequestPath(request));
     }
 
     @Override
@@ -58,7 +62,7 @@ public class ExceptionTranslator extends ResponseEntityExceptionHandler {
         body.put("message", message);
         body.put("path", path);
 
-        return new ResponseEntity<>(body, status);
+        return new ResponseEntity<>(body, status); //TODO: replace object with impl
     }
 
     private String getRequestPath(WebRequest request) {
