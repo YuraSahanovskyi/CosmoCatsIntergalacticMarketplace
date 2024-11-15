@@ -22,6 +22,8 @@ ext {
             "**/config/*Configuration.*",
             "**/domain/**",
             "**/dto/**",
+            "**Order**", //Not implemented
+            "**Mapper**"
     ]
 }
 
