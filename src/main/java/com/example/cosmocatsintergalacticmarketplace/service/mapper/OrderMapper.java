@@ -17,7 +17,7 @@ public interface OrderMapper {
     @Mapping(target = "customerName", source = "customerName")
     @Mapping(target = "date", source = "date")
     @Mapping(target = "status", source = "status")
-    @Mapping(target = "items", source = "order", expression = "java(convertItems(order.getItems()))")
+    @Mapping(target = "items", expression = "java(convertItems(order.getItems()))")
     OrderEntry toOrderEntry(Order order);
 
     default Map<ProductEntry, Integer> convertItems(Map<Product, Integer> items) {
