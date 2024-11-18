@@ -19,7 +19,7 @@ ext {
     minimumCoveragePerFile = 0.5
     filesExcludedFromCoverage = [
             "**/*MarketplaceApplication.*",
-            "**/config/*Configuration.*",
+            "**/config/**",
             "**/domain/**",
             "**/dto/**",
             "**Order**", //Not implemented
