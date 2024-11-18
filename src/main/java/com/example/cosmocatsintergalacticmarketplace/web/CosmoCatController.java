@@ -1,6 +1,8 @@
 package com.example.cosmocatsintergalacticmarketplace.web;
 
 import com.example.cosmocatsintergalacticmarketplace.dto.CosmoCatListDto;
+import com.example.cosmocatsintergalacticmarketplace.featuretoggle.FeatureToggles;
+import com.example.cosmocatsintergalacticmarketplace.featuretoggle.annotation.FeatureToggle;
 import com.example.cosmocatsintergalacticmarketplace.service.CosmoCatService;
 import com.example.cosmocatsintergalacticmarketplace.service.mapper.CosmoCatMapper;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,7 @@ public class CosmoCatController {
     }
 
     @GetMapping
-//    @FeatureToggle(FeatureToggles.COSMO_CATS)
+    @FeatureToggle(FeatureToggles.COSMO_CATS)
     public ResponseEntity<CosmoCatListDto> getCats() {
         return ResponseEntity.ok().body(
                 cosmoCatMapper.toCosmoCatListDto(cosmoCatsService.getCosmoCats()));
