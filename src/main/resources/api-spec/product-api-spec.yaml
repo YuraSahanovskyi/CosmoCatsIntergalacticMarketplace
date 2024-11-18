@@ -133,6 +133,24 @@ paths:
       responses:
         '204':
           description: Product deleted successfully
+  /api/v1/cats:
+    get:
+      summary: Get all Cosmo cast
+      tags:
+        - CosmoCats
+      responses:
+        '200':
+          description: List of all cats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CosmoCatListDto'
+        '404':
+          description: Feature toggle not enabled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
 components:
   schemas:
@@ -168,14 +186,39 @@ components:
       properties:
         name:
           type: string
+          maxLength: 100
           description: Name of the product
         description:
           type: string
+          maxLength: 255
           description: Description of the product
         price:
           type: number
           description: Price of the product
           example: "19.99"
+
+    CosmoCatEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the cat
+        name:
+          type: string
+          maxLength: 100
+          description: Name of the cat
+        color:
+          type: string
+          maxLength: 100
+          description: Description of the cat
+
+    CosmoCatListDto:
+      type: object
+      properties:
+        productEntries:
+          type: array
+          items:
+            $ref: '#/components/schemas/CosmoCatEntry'
 
     ErrorResponse:
       type: object
