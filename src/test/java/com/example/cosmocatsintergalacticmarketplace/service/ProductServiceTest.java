@@ -1,7 +1,7 @@
 package com.example.cosmocatsintergalacticmarketplace.service;
 
 import com.example.cosmocatsintergalacticmarketplace.domain.Product;
-import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductAlreadyExistsException;
+import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductConflictException;
 import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductNotFoundException;
 import com.example.cosmocatsintergalacticmarketplace.service.impl.ProductServiceImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -61,7 +61,7 @@ public class ProductServiceTest {
                 .price(new BigDecimal("15.99"))
                 .build();
         productService.createProduct(product);
-        assertThrows(ProductAlreadyExistsException.class, () -> productService.createProduct(product));
+        assertThrows(ProductConflictException.class, () -> productService.createProduct(product));
     }
 
     @Test
