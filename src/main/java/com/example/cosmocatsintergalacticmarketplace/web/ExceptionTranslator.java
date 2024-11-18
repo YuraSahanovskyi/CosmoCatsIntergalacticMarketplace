@@ -1,5 +1,6 @@
 package com.example.cosmocatsintergalacticmarketplace.web;
 
+import com.example.cosmocatsintergalacticmarketplace.featuretoggle.exception.FeatureToggleNotEnabledException;
 import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductAlreadyExistsException;
 import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductNotFoundException;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +22,11 @@ import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class ExceptionTranslator extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(FeatureToggleNotEnabledException.class)
+    public ResponseEntity<Object> handleFeatureToggleNotEnabled(FeatureToggleNotEnabledException ex, WebRequest request) {
+        return buildResponseEntity(HttpStatus.NOT_FOUND, ex.getMessage(), getRequestPath(request));
+    }
 
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<Object> handleProductNotFoundException(ProductNotFoundException ex, WebRequest request) {
