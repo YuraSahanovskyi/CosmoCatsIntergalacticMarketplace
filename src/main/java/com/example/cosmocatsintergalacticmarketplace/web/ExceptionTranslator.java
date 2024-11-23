@@ -1,5 +1,6 @@
 package com.example.cosmocatsintergalacticmarketplace.web;
 
+import com.example.cosmocatsintergalacticmarketplace.featuretoggle.exception.FeatureToggleNotEnabledException;
 import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductConflictException;
 import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductNotFoundException;
 import jakarta.annotation.Nullable;
@@ -17,6 +18,11 @@ import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class ExceptionTranslator extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(FeatureToggleNotEnabledException.class)
+    public ProblemDetail handleFeatureToggleNotEnabled(FeatureToggleNotEnabledException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
 
     @ExceptionHandler(ProductNotFoundException.class)
     public ProblemDetail handleProductNotFoundException(ProductNotFoundException ex) {
