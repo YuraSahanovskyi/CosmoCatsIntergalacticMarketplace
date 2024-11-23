@@ -14,13 +14,13 @@ public class CurrencyServiceImpl implements CurrencyService {
     private final CurrencyRateMapper currencyRateMapper;
     private final RestTemplate restTemplate;
 
-    @Value("${currency.api.url}")
-    private String externalApiUrl;
+    private final String externalApiUrl;
 
 
-    public CurrencyServiceImpl(CurrencyRateMapper currencyRateMapper, RestTemplate restTemplate) {
+    public CurrencyServiceImpl(CurrencyRateMapper currencyRateMapper, RestTemplate restTemplate, @Value("${currency.api.url}") String externalApiUrl) {
         this.currencyRateMapper = currencyRateMapper;
         this.restTemplate = restTemplate;
+        this.externalApiUrl = externalApiUrl;
     }
 
 

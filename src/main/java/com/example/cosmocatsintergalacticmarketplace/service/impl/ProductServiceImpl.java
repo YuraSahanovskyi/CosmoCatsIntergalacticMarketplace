@@ -2,7 +2,7 @@ package com.example.cosmocatsintergalacticmarketplace.service.impl;
 
 import com.example.cosmocatsintergalacticmarketplace.domain.Product;
 import com.example.cosmocatsintergalacticmarketplace.service.ProductService;
-import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductAlreadyExistsException;
+import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductConflictException;
 import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
                 .price(product.getPrice())
                 .build();
         if (products.contains(newProduct)) {
-            throw new ProductAlreadyExistsException(newProduct.getId());
+            throw new ProductConflictException(newProduct.getId());
         }
         products.add(newProduct);
         return newProduct;
