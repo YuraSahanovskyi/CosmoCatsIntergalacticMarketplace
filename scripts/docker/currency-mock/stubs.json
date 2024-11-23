@@ -1,0 +1,22 @@
+{
+  "mappings": [
+    {
+      "id": "1758c856-7230-4142-8840-bfc7ce114a0a",
+      "name": "Get currency rate",
+      "request": {
+        "url": "/rates?code=USD",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "jsonBody": {
+          "code": "USD",
+          "rate": "0.02419549963706751"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    }
+  ]
+}
