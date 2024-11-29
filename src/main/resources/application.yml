@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: Cosmo-Cats-Intergalactic-Marketplace
+
+currency:
+  api:
+    url: http://localhost:8089
+
+application:
+  feature:
+    toggles:
+      cosmo-cats: true
+      kitty-products: false
