@@ -172,6 +172,9 @@ components:
           type: number
           description: Price of the product
           example: "19.99"
+        categoryId:
+          type: number
+          description: ID of the category
 
     ProductListDto:
       type: object
@@ -196,6 +199,9 @@ components:
           type: number
           description: Price of the product
           example: "19.99"
+        categoryId:
+          type: number
+          description: ID of the category
 
     CosmoCatEntry:
       type: object
