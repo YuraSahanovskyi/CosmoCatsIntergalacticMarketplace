@@ -24,4 +24,5 @@ public class ProductDto {
     @NotNull(message = "Price is mandatory")
     @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than zero")
     BigDecimal price;
+    Long categoryId;
 }

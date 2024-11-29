@@ -33,6 +33,7 @@ public class ProductServiceImpl implements ProductService {
                 .name(product.getName())
                 .description(product.getDescription())
                 .price(product.getPrice())
+                .category(product.getCategory())
                 .build();
         if (products.contains(newProduct)) {
             throw new ProductConflictException(newProduct.getId());
@@ -58,6 +59,7 @@ public class ProductServiceImpl implements ProductService {
                 .name(product.getName())
                 .description(product.getDescription())
                 .price(product.getPrice())
+                .category(product.getCategory())
                 .build();
         products.add(newProduct);
         return newProduct;

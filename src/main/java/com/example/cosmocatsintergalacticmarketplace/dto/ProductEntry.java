@@ -14,4 +14,5 @@ public class ProductEntry {
     String name;
     String description;
     BigDecimal price;
+    Long categoryId;
 }
