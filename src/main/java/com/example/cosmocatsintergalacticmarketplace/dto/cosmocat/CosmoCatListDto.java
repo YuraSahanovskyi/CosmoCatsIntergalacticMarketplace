@@ -1,4 +1,4 @@
-package com.example.cosmocatsintergalacticmarketplace.dto;
+package com.example.cosmocatsintergalacticmarketplace.dto.cosmocat;
 
 import lombok.Builder;
 import lombok.Value;
@@ -9,6 +9,6 @@ import java.util.List;
 @Value
 @Builder(toBuilder = true)
 @Jacksonized
-public class ProductListDto {
-    List<ProductEntry> productEntries;
+public class CosmoCatListDto {
+    List<CosmoCatEntry> cosmoCatEntries;
 }

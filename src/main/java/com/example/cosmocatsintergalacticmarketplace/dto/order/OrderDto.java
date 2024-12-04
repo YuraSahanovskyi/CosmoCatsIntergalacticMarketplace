@@ -1,4 +1,4 @@
-package com.example.cosmocatsintergalacticmarketplace.dto;
+package com.example.cosmocatsintergalacticmarketplace.dto.order;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;

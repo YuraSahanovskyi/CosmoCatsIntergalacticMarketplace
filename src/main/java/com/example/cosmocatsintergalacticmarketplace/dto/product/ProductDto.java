@@ -1,4 +1,4 @@
-package com.example.cosmocatsintergalacticmarketplace.dto;
+package com.example.cosmocatsintergalacticmarketplace.dto.product;
 
 import com.example.cosmocatsintergalacticmarketplace.dto.validation.CosmicWordCheck;
 import jakarta.validation.constraints.*;

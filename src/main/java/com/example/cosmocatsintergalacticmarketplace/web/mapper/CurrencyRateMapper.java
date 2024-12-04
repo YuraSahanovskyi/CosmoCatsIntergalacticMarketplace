@@ -1,4 +1,4 @@
-package com.example.cosmocatsintergalacticmarketplace.service.mapper;
+package com.example.cosmocatsintergalacticmarketplace.web.mapper;
 
 import com.example.cosmocatsintergalacticmarketplace.domain.CurrencyRate;
 import com.example.cosmocatsintergalacticmarketplace.dto.CurrencyRateDto;

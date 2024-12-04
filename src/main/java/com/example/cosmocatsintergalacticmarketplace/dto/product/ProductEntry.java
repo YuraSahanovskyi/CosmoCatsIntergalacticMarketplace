@@ -1,4 +1,4 @@
-package com.example.cosmocatsintergalacticmarketplace.dto;
+package com.example.cosmocatsintergalacticmarketplace.dto.product;
 
 import lombok.Builder;
 import lombok.Value;

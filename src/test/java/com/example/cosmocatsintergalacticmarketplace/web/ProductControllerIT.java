@@ -1,6 +1,6 @@
 package com.example.cosmocatsintergalacticmarketplace.web;
 
-import com.example.cosmocatsintergalacticmarketplace.dto.ProductDto;
+import com.example.cosmocatsintergalacticmarketplace.dto.product.ProductDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;

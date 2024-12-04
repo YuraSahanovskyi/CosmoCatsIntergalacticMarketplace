@@ -1,5 +1,6 @@
-package com.example.cosmocatsintergalacticmarketplace.dto;
+package com.example.cosmocatsintergalacticmarketplace.dto.order;
 
+import com.example.cosmocatsintergalacticmarketplace.dto.product.ProductEntry;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;

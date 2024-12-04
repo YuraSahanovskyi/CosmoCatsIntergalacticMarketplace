@@ -1,9 +1,9 @@
-package com.example.cosmocatsintergalacticmarketplace.service.mapper;
+package com.example.cosmocatsintergalacticmarketplace.web.mapper;
 
 import com.example.cosmocatsintergalacticmarketplace.domain.Order;
 import com.example.cosmocatsintergalacticmarketplace.domain.Product;
-import com.example.cosmocatsintergalacticmarketplace.dto.OrderEntry;
-import com.example.cosmocatsintergalacticmarketplace.dto.ProductEntry;
+import com.example.cosmocatsintergalacticmarketplace.dto.order.OrderEntry;
+import com.example.cosmocatsintergalacticmarketplace.dto.product.ProductEntry;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -23,7 +23,7 @@ public interface OrderMapper {
     default Map<ProductEntry, Integer> convertItems(Map<Product, Integer> items) {
         Map<ProductEntry, Integer> convertedItems = new HashMap<>();
         for (Map.Entry<Product, Integer> entry : items.entrySet()) {
-            convertedItems.put(Mappers.getMapper(ProductMapper.class).toProductEntry(entry.getKey()), entry.getValue());
+            convertedItems.put(Mappers.getMapper(WebProductMapper.class).toProductEntry(entry.getKey()), entry.getValue());
         }
         return convertedItems;
     }

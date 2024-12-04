@@ -1,8 +1,8 @@
-package com.example.cosmocatsintergalacticmarketplace.service.mapper;
+package com.example.cosmocatsintergalacticmarketplace.web.mapper;
 
 import com.example.cosmocatsintergalacticmarketplace.domain.CosmoCat;
-import com.example.cosmocatsintergalacticmarketplace.dto.CosmoCatEntry;
-import com.example.cosmocatsintergalacticmarketplace.dto.CosmoCatListDto;
+import com.example.cosmocatsintergalacticmarketplace.dto.cosmocat.CosmoCatEntry;
+import com.example.cosmocatsintergalacticmarketplace.dto.cosmocat.CosmoCatListDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
