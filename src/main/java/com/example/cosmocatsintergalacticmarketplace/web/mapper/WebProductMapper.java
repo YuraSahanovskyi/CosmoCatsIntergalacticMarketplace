@@ -1,24 +1,24 @@
-package com.example.cosmocatsintergalacticmarketplace.service.mapper;
+package com.example.cosmocatsintergalacticmarketplace.web.mapper;
 
 import com.example.cosmocatsintergalacticmarketplace.domain.Category;
 import com.example.cosmocatsintergalacticmarketplace.domain.Product;
-import com.example.cosmocatsintergalacticmarketplace.dto.ProductDto;
-import com.example.cosmocatsintergalacticmarketplace.dto.ProductEntry;
-import com.example.cosmocatsintergalacticmarketplace.dto.ProductListDto;
+import com.example.cosmocatsintergalacticmarketplace.dto.product.ProductDto;
+import com.example.cosmocatsintergalacticmarketplace.dto.product.ProductEntry;
+import com.example.cosmocatsintergalacticmarketplace.dto.product.ProductListDto;
 import com.example.cosmocatsintergalacticmarketplace.service.CategoryService;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public abstract class ProductMapper {
+@Component
+public abstract class WebProductMapper {
 
     @Autowired
-    @Lazy
     protected CategoryService categoryService;
 
     @Mapping(target = "id", source = "id")
@@ -48,6 +48,13 @@ public abstract class ProductMapper {
     @Mapping(target = "price", source = "price")
     @Mapping(target = "category", source = "categoryId", qualifiedByName = "idToCategory")
     public abstract Product toProduct(ProductDto productDto);
+
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "productDto.name")
+    @Mapping(target = "description", source = "productDto.description")
+    @Mapping(target = "price", source = "productDto.price")
+    @Mapping(target = "category", source = "productDto.categoryId", qualifiedByName = "idToCategory")
+    public abstract Product toProductWithId(ProductDto productDto, Long id);
 
     @Named("idToCategory")
     protected Category idToCategory(Long id) {

@@ -2,12 +2,12 @@ package com.example.cosmocatsintergalacticmarketplace.web;
 
 import com.example.cosmocatsintergalacticmarketplace.domain.CurrencyRate;
 import com.example.cosmocatsintergalacticmarketplace.domain.Product;
-import com.example.cosmocatsintergalacticmarketplace.dto.ProductDto;
-import com.example.cosmocatsintergalacticmarketplace.dto.ProductEntry;
-import com.example.cosmocatsintergalacticmarketplace.dto.ProductListDto;
+import com.example.cosmocatsintergalacticmarketplace.dto.product.ProductDto;
+import com.example.cosmocatsintergalacticmarketplace.dto.product.ProductEntry;
+import com.example.cosmocatsintergalacticmarketplace.dto.product.ProductListDto;
 import com.example.cosmocatsintergalacticmarketplace.service.CurrencyService;
 import com.example.cosmocatsintergalacticmarketplace.service.ProductService;
-import com.example.cosmocatsintergalacticmarketplace.service.mapper.ProductMapper;
+import com.example.cosmocatsintergalacticmarketplace.web.mapper.WebProductMapper;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +21,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/products")
 public class ProductController {
     private final ProductService productService;
-    private final ProductMapper productMapper;
+    private final WebProductMapper webProductMapper;
     private final CurrencyService currencyService;
 
-    public ProductController(ProductService productService, ProductMapper productMapper, CurrencyService currencyService) {
+    public ProductController(ProductService productService, WebProductMapper webProductMapper, CurrencyService currencyService) {
         this.productService = productService;
-        this.productMapper = productMapper;
+        this.webProductMapper = webProductMapper;
         this.currencyService = currencyService;
     }
 
@@ -39,7 +39,7 @@ public class ProductController {
                     .map(product -> convertPrice(product, currencyRate))
                     .collect(Collectors.toList());
         }
-        return ResponseEntity.ok(productMapper.toProductListDto(products));
+        return ResponseEntity.ok(webProductMapper.toProductListDto(products));
     }
 
     @GetMapping("/{id}")
@@ -49,19 +49,19 @@ public class ProductController {
             CurrencyRate currencyRate = currencyService.getCurrencyRate(currencyCode);
             product = convertPrice(product, currencyRate);
         }
-        return ResponseEntity.ok(productMapper.toProductEntry(product));
+        return ResponseEntity.ok(webProductMapper.toProductEntry(product));
     }
 
     @PostMapping
     ResponseEntity<ProductEntry> createProduct(@RequestBody @Valid ProductDto product) {
-        ProductEntry productEntry = productMapper.toProductEntry(productService.createProduct(productMapper.toProduct(product)));
+        ProductEntry productEntry = webProductMapper.toProductEntry(productService.createProduct(webProductMapper.toProduct(product)));
         return ResponseEntity.created(URI.create("http://localhost:8080/api/v1/products/" + productEntry.getId())).body(productEntry);
         //TODO: URI
     }
 
     @PutMapping("/{id}")
     ResponseEntity<ProductEntry> updateProduct(@PathVariable Long id, @RequestBody @Valid ProductDto product) {
-        ProductEntry productEntry = productMapper.toProductEntry(productService.updateProduct(id, productMapper.toProduct(product)));
+        ProductEntry productEntry = webProductMapper.toProductEntry(productService.updateProduct(webProductMapper.toProductWithId(product, id)));
         return ResponseEntity.created(URI.create("http://localhost:8080/api/v1/products/" + productEntry.getId())).body(productEntry);
         //TODO: URI
     }
