@@ -4,7 +4,7 @@ databaseChangeLog:
       author: yurasahanovskyi
       changes:
         - createTable:
-            tableName: category
+            tableName: categories
             columns:
               - column:
                   name: id
@@ -27,7 +27,7 @@ databaseChangeLog:
       author: yurasahanovskyi
       changes:
         - createTable:
-            tableName: "order"
+            tableName: "orders"
             columns:
               - column:
                   name: id
@@ -56,7 +56,7 @@ databaseChangeLog:
       author: yurasahanovskyi
       changes:
         - createTable:
-            tableName: product
+            tableName: products
             columns:
               - column:
                   name: id
@@ -116,10 +116,10 @@ databaseChangeLog:
       author: yurasahanovskyi
       changes:
         - addForeignKeyConstraint:
-            baseTableName: product
+            baseTableName: products
             baseColumnNames: category_id
             constraintName: fk_product_category
-            referencedTableName: category
+            referencedTableName: categories
             referencedColumnNames: id
 
   - changeSet:
@@ -130,7 +130,7 @@ databaseChangeLog:
             baseTableName: order_product
             baseColumnNames: order_id
             constraintName: fk_order_product_order
-            referencedTableName: "order"
+            referencedTableName: "orders"
             referencedColumnNames: id
 
   - changeSet:
@@ -141,7 +141,7 @@ databaseChangeLog:
             baseTableName: order_product
             baseColumnNames: product_id
             constraintName: fk_order_product_product
-            referencedTableName: product
+            referencedTableName: products
             referencedColumnNames: id
   - changeSet:
       id: 8
@@ -150,7 +150,7 @@ databaseChangeLog:
         - addUniqueConstraint:
             columnNames: name
             constraintName: uc_product_name
-            tableName: product
+            tableName: products
   - changeSet:
       id: 9
       author: yurasahanovskyi
@@ -158,4 +158,4 @@ databaseChangeLog:
         - addUniqueConstraint:
             columnNames: name
             constraintName: uc_category_name
-            tableName: category
+            tableName: categories
