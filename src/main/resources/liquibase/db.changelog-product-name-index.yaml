@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 11
+      author: yurasahanovskyi
+      changes:
+        - createIndex:
+            indexName: idx_product_name
+            tableName: products
+            columns:
+              - name: name
