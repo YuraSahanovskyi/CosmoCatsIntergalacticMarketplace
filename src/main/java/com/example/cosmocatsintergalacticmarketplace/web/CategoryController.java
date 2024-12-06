@@ -4,7 +4,6 @@ import com.example.cosmocatsintergalacticmarketplace.dto.category.CategoryDto;
 import com.example.cosmocatsintergalacticmarketplace.dto.category.CategoryEntry;
 import com.example.cosmocatsintergalacticmarketplace.dto.category.CategoryListDto;
 import com.example.cosmocatsintergalacticmarketplace.service.CategoryService;
-import com.example.cosmocatsintergalacticmarketplace.service.mapper.ServiceCategoryMapper;
 import com.example.cosmocatsintergalacticmarketplace.web.mapper.WebCategoryMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
