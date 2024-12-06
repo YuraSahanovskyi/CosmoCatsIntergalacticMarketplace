@@ -36,8 +36,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product createProduct(Product product) {
-        if (productRepository.existsByName(product.getName())) {
-            throw new ProductConflictException(product.getName());
+        if (productRepository.existsByNameAndCategoryId(product.getName(), product.getCategory().getId())) {
+            throw new ProductConflictException(product.getName(), product.getCategory().getName());
         }
         ProductEntity productEntity = serviceProductMapper.toProductEntity(product);
         productEntity = productRepository.save(productEntity);
