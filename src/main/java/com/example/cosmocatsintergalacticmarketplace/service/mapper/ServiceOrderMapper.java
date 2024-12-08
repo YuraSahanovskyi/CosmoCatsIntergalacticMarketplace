@@ -57,9 +57,7 @@ public abstract class ServiceOrderMapper {
     @AfterMapping
     protected void linkOrderProducts(@MappingTarget OrderEntity orderEntity) {
         if (orderEntity.getOrderProducts() != null) {
-            orderEntity.getOrderProducts().forEach(orderProduct -> {
-                orderProduct.setOrder(orderEntity);
-            });
+            orderEntity.getOrderProducts().forEach(orderProduct -> orderProduct.setOrder(orderEntity));
         }
     }
 }

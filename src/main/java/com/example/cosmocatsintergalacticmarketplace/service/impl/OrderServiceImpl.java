@@ -2,7 +2,6 @@ package com.example.cosmocatsintergalacticmarketplace.service.impl;
 
 import com.example.cosmocatsintergalacticmarketplace.domain.Order;
 import com.example.cosmocatsintergalacticmarketplace.repository.OrderRepository;
-import com.example.cosmocatsintergalacticmarketplace.repository.entity.OrderEntity;
 import com.example.cosmocatsintergalacticmarketplace.service.OrderService;
 import com.example.cosmocatsintergalacticmarketplace.service.exception.OrderNotFoundException;
 import com.example.cosmocatsintergalacticmarketplace.service.mapper.ServiceOrderMapper;
