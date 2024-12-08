@@ -56,7 +56,7 @@ public abstract class WebOrderMapper {
     @Mapping(target = "id", source = "id")
     @Mapping(target = "customerName", source = "orderDto.customerName")
     @Mapping(target = "date", ignore = true)
-    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "status", source = "orderDto.status")
     @Mapping(target = "items", source = "orderDto.items")
     public abstract Order toOrderWithId(OrderDto orderDto, Long id);
 

@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -28,5 +30,8 @@ public class ProductEntity {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private Set<OrderProductEntity> orderProducts = new HashSet<>();
 
 }

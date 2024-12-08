@@ -92,6 +92,11 @@ databaseChangeLog:
             tableName: order_product
             columns:
               - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+              - column:
                   name: order_id
                   type: bigint
                   constraints:
@@ -106,10 +111,7 @@ databaseChangeLog:
                   type: integer
                   constraints:
                     nullable: false
-              - primaryKey:
-                  columns:
-                    - order_id
-                    - product_id
+
 
   - changeSet:
       id: 5
