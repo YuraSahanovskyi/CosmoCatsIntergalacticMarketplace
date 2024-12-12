@@ -7,6 +7,8 @@ import com.example.cosmocatsintergalacticmarketplace.service.exception.CategoryC
 import com.example.cosmocatsintergalacticmarketplace.service.exception.CategoryNotFoundException;
 import com.example.cosmocatsintergalacticmarketplace.service.mapper.ServiceCategoryMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,11 +23,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Category> getAllCategories() {
         return serviceCategoryMapper.toCategoryList(categoryRepository.findAll());
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Category getCategoryById(Long id) {
         return serviceCategoryMapper.toCategory(
                 categoryRepository.findById(id).orElseThrow(
@@ -33,6 +37,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.NESTED)
     public Category createCategory(Category category) {
         if (categoryRepository.existsByName(category.getName())) {
             throw new CategoryConflictException(category.getName());
@@ -43,11 +48,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public void deleteCategoryById(Long id) {
         categoryRepository.deleteById(id);
     }
 
     @Override
+    @Transactional(propagation = Propagation.NESTED)
     public Category updateCategory(Category category) {
         if(!categoryRepository.existsById(category.getId())) {
             throw new CategoryNotFoundException(category.getId());

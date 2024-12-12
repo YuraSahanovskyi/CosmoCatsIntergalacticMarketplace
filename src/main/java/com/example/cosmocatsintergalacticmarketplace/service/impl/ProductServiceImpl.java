@@ -8,6 +8,8 @@ import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductCo
 import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductNotFoundException;
 import com.example.cosmocatsintergalacticmarketplace.service.mapper.ServiceProductMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Product getProductById(Long productId) {
         return serviceProductMapper.toProduct(
                 productRepository.findById(productId).orElseThrow(
@@ -30,11 +33,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Product> getAllProducts() {
         return serviceProductMapper.toProductList(productRepository.findAll());
     }
 
     @Override
+    @Transactional(propagation = Propagation.NESTED)
     public Product createProduct(Product product) {
         if (productRepository.existsByNameAndCategoryId(product.getName(), product.getCategory().getId())) {
             throw new ProductConflictException(product.getName(), product.getCategory().getName());
@@ -45,11 +50,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void deleteProduct(Long productId) {
         productRepository.deleteById(productId);
     }
 
     @Override
+    @Transactional(propagation = Propagation.NESTED)
     public Product updateProduct(Product product) {
         if (!productRepository.existsById(product.getId())) {
             throw new ProductNotFoundException(product.getId());
