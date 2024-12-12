@@ -14,9 +14,9 @@ import java.io.Serializable;
 @Table(name = "order_product")
 public class OrderProductEntity implements Serializable {
 
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_product_id_seq")
+    @SequenceGenerator(name = "order_product_id_seq", sequenceName = "order_product_id_seq")
     private Long id;
 
     @ManyToOne

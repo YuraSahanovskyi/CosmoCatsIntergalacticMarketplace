@@ -19,8 +19,10 @@ import java.util.Set;
         @Index(name = "idx_product_name", columnList = "name")
 })
 public class ProductEntity {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "products_id_seq")
+    @SequenceGenerator(name = "products_id_seq", sequenceName = "products_id_seq")
     private Long id;
 
     private String name;
@@ -33,5 +35,4 @@ public class ProductEntity {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<OrderProductEntity> orderProducts = new HashSet<>();
-
 }

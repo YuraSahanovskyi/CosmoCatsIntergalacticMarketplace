@@ -8,7 +8,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigserial
+                  type: bigint
                   constraints:
                     primaryKey: true
               - column:
@@ -31,7 +31,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigserial
+                  type: bigint
                   constraints:
                     primaryKey: true
               - column:
@@ -60,7 +60,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigserial
+                  type: bigint
                   constraints:
                     primaryKey: true
               - column:
@@ -93,7 +93,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigserial
+                  type: bigint
                   constraints:
                     primaryKey: true
               - column:
@@ -111,7 +111,6 @@ databaseChangeLog:
                   type: integer
                   constraints:
                     nullable: false
-
 
   - changeSet:
       id: 5
@@ -145,6 +144,7 @@ databaseChangeLog:
             constraintName: fk_order_product_product
             referencedTableName: products
             referencedColumnNames: id
+
   - changeSet:
       id: 8
       author: yurasahanovskyi
@@ -153,6 +153,7 @@ databaseChangeLog:
             columnNames: name
             constraintName: uc_product_name
             tableName: products
+
   - changeSet:
       id: 9
       author: yurasahanovskyi

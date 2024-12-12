@@ -17,7 +17,8 @@ import java.util.List;
 public class CategoryEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "categories_id_seq")
+    @SequenceGenerator(name = "categories_id_seq", sequenceName = "categories_id_seq")
     private Long id;
 
     private String name;
@@ -25,5 +26,4 @@ public class CategoryEntity {
 
     @OneToMany(mappedBy = "category")
     private List<ProductEntity> products;
-
 }

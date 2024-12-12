@@ -1,0 +1,70 @@
+databaseChangeLog:
+  # Create sequences for each ID column
+  - changeSet:
+      id: 12
+      author: yurasahanovskyi
+      changes:
+        - createSequence:
+            sequenceName: categories_id_seq
+            incrementBy: 50
+
+  - changeSet:
+      id: 13
+      author: yurasahanovskyi
+      changes:
+        - createSequence:
+            sequenceName: orders_id_seq
+            incrementBy: 50
+
+  - changeSet:
+      id: 14
+      author: yurasahanovskyi
+      changes:
+        - createSequence:
+            sequenceName: products_id_seq
+            incrementBy: 50
+
+  - changeSet:
+      id: 15
+      author: yurasahanovskyi
+      changes:
+        - createSequence:
+            sequenceName: order_product_id_seq
+            incrementBy: 50
+
+  # Alter the tables to set the default value for the ID column using the sequence
+  - changeSet:
+      id: 16
+      author: yurasahanovskyi
+      changes:
+        - addDefaultValue:
+            tableName: categories
+            columnName: id
+            defaultValueComputed: "nextval('categories_id_seq')"
+
+  - changeSet:
+      id: 17
+      author: yurasahanovskyi
+      changes:
+        - addDefaultValue:
+            tableName: orders
+            columnName: id
+            defaultValueComputed: "nextval('orders_id_seq')"
+
+  - changeSet:
+      id: 18
+      author: yurasahanovskyi
+      changes:
+        - addDefaultValue:
+            tableName: products
+            columnName: id
+            defaultValueComputed: "nextval('products_id_seq')"
+
+  - changeSet:
+      id: 19
+      author: yurasahanovskyi
+      changes:
+        - addDefaultValue:
+            tableName: order_product
+            columnName: id
+            defaultValueComputed: "nextval('order_product_id_seq')"
