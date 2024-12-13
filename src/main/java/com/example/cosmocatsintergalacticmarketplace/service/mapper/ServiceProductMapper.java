@@ -38,6 +38,7 @@ public abstract class ServiceProductMapper {
     @Mapping(target = "description", source = "description")
     @Mapping(target = "price", source = "price")
     @Mapping(target = "category", source = "category", qualifiedByName = "toCategoryEntity")
+    @Mapping(target = "orderProducts", ignore = true)
     public abstract ProductEntity toProductEntity(Product product);
 
     @Named("toCategoryEntity")
