@@ -30,5 +30,6 @@ public class OrderEntity {
     private String status;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private Set<OrderProductEntity> orderProducts = new HashSet<>();
 }

@@ -34,5 +34,6 @@ public class ProductEntity {
     private CategoryEntity category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private Set<OrderProductEntity> orderProducts = new HashSet<>();
 }
