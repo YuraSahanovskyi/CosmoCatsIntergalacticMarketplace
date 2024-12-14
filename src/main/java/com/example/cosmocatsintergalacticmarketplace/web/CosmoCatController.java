@@ -1,10 +1,10 @@
 package com.example.cosmocatsintergalacticmarketplace.web;
 
-import com.example.cosmocatsintergalacticmarketplace.dto.CosmoCatListDto;
+import com.example.cosmocatsintergalacticmarketplace.dto.cosmocat.CosmoCatListDto;
 import com.example.cosmocatsintergalacticmarketplace.featuretoggle.FeatureToggles;
 import com.example.cosmocatsintergalacticmarketplace.featuretoggle.annotation.FeatureToggle;
 import com.example.cosmocatsintergalacticmarketplace.service.CosmoCatService;
-import com.example.cosmocatsintergalacticmarketplace.service.mapper.CosmoCatMapper;
+import com.example.cosmocatsintergalacticmarketplace.web.mapper.CosmoCatMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

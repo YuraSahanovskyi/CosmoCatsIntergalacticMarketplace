@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: liquibase/db.changelog-init.yaml
+  - include:
+      file: liquibase/db.changelog-unique-product.yaml
+  - include:
+      file: liquibase/db.changelog-product-name-index.yaml
+  - include:
+      file: liquibase/db.changelog-bigserial-to-sequence.yaml

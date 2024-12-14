@@ -1,120 +1,69 @@
 package com.example.cosmocatsintergalacticmarketplace.service.impl;
 
 import com.example.cosmocatsintergalacticmarketplace.domain.Product;
+import com.example.cosmocatsintergalacticmarketplace.repository.ProductRepository;
+import com.example.cosmocatsintergalacticmarketplace.repository.entity.ProductEntity;
 import com.example.cosmocatsintergalacticmarketplace.service.ProductService;
 import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductConflictException;
 import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductNotFoundException;
+import com.example.cosmocatsintergalacticmarketplace.service.mapper.ServiceProductMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-    private final List<Product> products = buildAllProductsMock();
+    private final ProductRepository productRepository;
+    private final ServiceProductMapper serviceProductMapper;
+
+
+    public ProductServiceImpl(ProductRepository productRepository, ServiceProductMapper serviceProductMapper) {
+        this.productRepository = productRepository;
+        this.serviceProductMapper = serviceProductMapper;
+    }
+
     @Override
+    @Transactional(readOnly = true)
     public Product getProductById(Long productId) {
-        return products.stream()
-                .filter(product -> product.getId().equals(productId))
-                .findFirst()
-                .orElseThrow(()-> new ProductNotFoundException(productId));
+        return serviceProductMapper.toProduct(
+                productRepository.findById(productId).orElseThrow(
+                        () -> new ProductNotFoundException(productId)));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Product> getAllProducts() {
-        return products;
+        return serviceProductMapper.toProductList(productRepository.findAll());
     }
 
     @Override
+    @Transactional(propagation = Propagation.NESTED)
     public Product createProduct(Product product) {
-        Product newProduct =  Product.builder()
-                .id(9L)
-                .name(product.getName())
-                .description(product.getDescription())
-                .price(product.getPrice())
-                .build();
-        if (products.contains(newProduct)) {
-            throw new ProductConflictException(newProduct.getId());
+        if (productRepository.existsByNameAndCategoryId(product.getName(), product.getCategory().getId())) {
+            throw new ProductConflictException(product.getName(), product.getCategory().getName());
         }
-        products.add(newProduct);
-        return newProduct;
-
+        ProductEntity productEntity = serviceProductMapper.toProductEntity(product);
+        productEntity = productRepository.save(productEntity);
+        return serviceProductMapper.toProduct(productEntity);
     }
 
     @Override
+    @Transactional
     public void deleteProduct(Long productId) {
-        products.removeIf(product -> product.getId().equals(productId));
+        productRepository.deleteById(productId);
     }
 
     @Override
-    public Product updateProduct(Long productId, Product product) {
-        if (products.stream().noneMatch(product1 -> product1.getId().equals(productId))) {
-            throw new ProductNotFoundException(productId);
+    @Transactional(propagation = Propagation.NESTED)
+    public Product updateProduct(Product product) {
+        if (!productRepository.existsById(product.getId())) {
+            throw new ProductNotFoundException(product.getId());
         }
-        products.removeIf(product1 -> product1.getId().equals(productId));
-        Product newProduct =  Product.builder()
-                .id(productId)
-                .name(product.getName())
-                .description(product.getDescription())
-                .price(product.getPrice())
-                .build();
-        products.add(newProduct);
-        return newProduct;
-    }
-
-
-    private List<Product> buildAllProductsMock() {
-        return new ArrayList<>(List.of(
-                Product.builder()
-                        .id(1L)
-                        .name("Anti-Gravity Yarn Ball")
-                        .description("A lightweight yarn ball that floats in mid-air. Perfect for cosmic knitting!")
-                        .price(new BigDecimal("15.99"))
-                        .build(),
-                Product.builder()
-                        .id(2L)
-                        .name("Galactic Catnip Sprays")
-                        .description("Extra-strong catnip sprays from the Andromeda galaxy to make your cats go wild!")
-                        .price(new BigDecimal("12.49"))
-                        .build(),
-                Product.builder()
-                        .id(3L)
-                        .name("Space Milk Treats")
-                        .description("Delicious space milk treats that your cat will love. Fortified with cosmic vitamins!")
-                        .price(new BigDecimal("22.99"))
-                        .build(),
-                Product.builder()
-                        .id(4L)
-                        .name("Meteorite Cat Bed")
-                        .description("Cozy cat bed made from real meteorite materials. Perfect for the intergalactic traveler!")
-                        .price(new BigDecimal("79.99"))
-                        .build(),
-                Product.builder()
-                        .id(5L)
-                        .name("Stellar Fish Flakes")
-                        .description("Tasty fish flakes harvested from the rings of Saturn. A treat fit for a space feline!")
-                        .price(new BigDecimal("5.99"))
-                        .build(),
-                Product.builder()
-                        .id(6L)
-                        .name("Feline Starship Toy")
-                        .description("A plush starship toy that lights up and makes sounds when your cat plays with it.")
-                        .price(new BigDecimal("34.99"))
-                        .build(),
-                Product.builder()
-                        .id(7L)
-                        .name("Intergalactic Grooming Kit")
-                        .description("Grooming kit designed for cosmic cats, featuring tools made from stardust.")
-                        .price(new BigDecimal("19.99"))
-                        .build(),
-                Product.builder()
-                        .id(8L)
-                        .name("Cosmic Litter Box")
-                        .description("A high-tech litter box that automatically cleans itself. No more stinky spaceships!")
-                        .price(new BigDecimal("149.99"))
-                        .build()
-        ));
+        return serviceProductMapper.toProduct(
+                productRepository.save(
+                        serviceProductMapper.toProductEntity(product)));
     }
 
 }
