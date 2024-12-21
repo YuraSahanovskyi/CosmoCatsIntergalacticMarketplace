@@ -11,6 +11,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -29,6 +31,7 @@ public class CosmoCatControllerIT {
 
     @Test
     @SneakyThrows
+    @WithMockUser
     @DisabledFeatureToggle(FeatureToggles.COSMO_CATS)
     void shouldGet404FeatureDisabled() throws Exception {
         mockMvc.perform(get("/api/v1/cats")).andExpect(status().isNotFound());
@@ -36,8 +39,18 @@ public class CosmoCatControllerIT {
 
     @Test
     @SneakyThrows
+    @WithMockUser
     @EnabledFeatureToggle(FeatureToggles.COSMO_CATS)
     void shouldGet200() throws Exception {
         mockMvc.perform(get("/api/v1/cats")).andExpect(status().isOk());
+    }
+
+    @Test
+    @SneakyThrows
+    @EnabledFeatureToggle(FeatureToggles.COSMO_CATS)
+    public void testGithubOAuthLogin() throws Exception {
+        mockMvc.perform(get("/api/v1/cats")
+                        .with(SecurityMockMvcRequestPostProcessors.oauth2Login()))
+                .andExpect(status().isOk());
     }
 }
