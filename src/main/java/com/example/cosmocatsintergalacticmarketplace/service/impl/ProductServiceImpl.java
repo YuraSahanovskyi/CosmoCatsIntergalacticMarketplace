@@ -2,11 +2,11 @@ package com.example.cosmocatsintergalacticmarketplace.service.impl;
 
 import com.example.cosmocatsintergalacticmarketplace.domain.Product;
 import com.example.cosmocatsintergalacticmarketplace.repository.ProductRepository;
-import com.example.cosmocatsintergalacticmarketplace.repository.entity.ProductEntity;
 import com.example.cosmocatsintergalacticmarketplace.service.ProductService;
 import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductConflictException;
 import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductNotFoundException;
 import com.example.cosmocatsintergalacticmarketplace.service.mapper.ServiceProductMapper;
+import jakarta.persistence.PersistenceException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,15 +44,21 @@ public class ProductServiceImpl implements ProductService {
         if (productRepository.existsByNameAndCategoryId(product.getName(), product.getCategory().getId())) {
             throw new ProductConflictException(product.getName(), product.getCategory().getName());
         }
-        ProductEntity productEntity = serviceProductMapper.toProductEntity(product);
-        productEntity = productRepository.save(productEntity);
-        return serviceProductMapper.toProduct(productEntity);
+        try {
+            return serviceProductMapper.toProduct(productRepository.save(serviceProductMapper.toProductEntity(product)));
+        } catch (Exception e) {
+            throw new PersistenceException(e);
+        }
     }
 
     @Override
     @Transactional
     public void deleteProduct(Long productId) {
-        productRepository.deleteById(productId);
+        try {
+            productRepository.deleteById(productId);
+        } catch (Exception e) {
+            throw new PersistenceException(e);
+        }
     }
 
     @Override
@@ -61,9 +67,13 @@ public class ProductServiceImpl implements ProductService {
         if (!productRepository.existsById(product.getId())) {
             throw new ProductNotFoundException(product.getId());
         }
-        return serviceProductMapper.toProduct(
-                productRepository.save(
-                        serviceProductMapper.toProductEntity(product)));
+        try {
+            return serviceProductMapper.toProduct(
+                    productRepository.save(
+                            serviceProductMapper.toProductEntity(product)));
+        } catch (Exception e) {
+            throw new PersistenceException(e);
+        }
     }
 
 }

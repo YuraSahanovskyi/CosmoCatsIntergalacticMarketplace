@@ -3,6 +3,7 @@ package com.example.cosmocatsintergalacticmarketplace.web;
 import com.example.cosmocatsintergalacticmarketplace.featuretoggle.exception.FeatureToggleNotEnabledException;
 import com.example.cosmocatsintergalacticmarketplace.service.exception.*;
 import jakarta.annotation.Nullable;
+import jakarta.persistence.PersistenceException;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -31,6 +32,11 @@ public class ExceptionTranslator extends ResponseEntityExceptionHandler {
     @ExceptionHandler({ProductConflictException.class, CategoryConflictException.class})
     public ProblemDetail handleConflictException(RuntimeException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    @ExceptionHandler({PersistenceException.class})
+    public ProblemDetail handlePersistenceException(RuntimeException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @Override

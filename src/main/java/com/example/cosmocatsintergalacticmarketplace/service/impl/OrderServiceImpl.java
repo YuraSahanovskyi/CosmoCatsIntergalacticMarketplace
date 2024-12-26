@@ -5,6 +5,7 @@ import com.example.cosmocatsintergalacticmarketplace.repository.OrderRepository;
 import com.example.cosmocatsintergalacticmarketplace.service.OrderService;
 import com.example.cosmocatsintergalacticmarketplace.service.exception.OrderNotFoundException;
 import com.example.cosmocatsintergalacticmarketplace.service.mapper.ServiceOrderMapper;
+import jakarta.persistence.PersistenceException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +40,11 @@ public class OrderServiceImpl implements OrderService {
     public Order createOrder(Order order) {
         order.setDate(LocalDateTime.now());
         order.setStatus("In progress");
-        return serviceOrderMapper.toOrder(orderRepository.save(serviceOrderMapper.toOrderEntity(order)));
+        try {
+            return serviceOrderMapper.toOrder(orderRepository.save(serviceOrderMapper.toOrderEntity(order)));
+        } catch (Exception e) {
+            throw new PersistenceException(e);
+        }
     }
 
     @Override
@@ -50,12 +55,20 @@ public class OrderServiceImpl implements OrderService {
         }
         Order oldOrder = getOrderById(order.getId());
         order.setDate(oldOrder.getDate());
-        return serviceOrderMapper.toOrder(orderRepository.save(serviceOrderMapper.toOrderEntity(order)));
+        try {
+            return serviceOrderMapper.toOrder(orderRepository.save(serviceOrderMapper.toOrderEntity(order)));
+        } catch (Exception e) {
+            throw new PersistenceException(e);
+        }
     }
 
     @Override
     @Transactional
     public void deleteOrder(Long id) {
-        orderRepository.deleteById(id);
+        try {
+            orderRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new PersistenceException(e);
+        }
     }
 }

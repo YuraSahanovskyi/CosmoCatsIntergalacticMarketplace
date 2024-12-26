@@ -6,6 +6,7 @@ import com.example.cosmocatsintergalacticmarketplace.service.CategoryService;
 import com.example.cosmocatsintergalacticmarketplace.service.exception.CategoryConflictException;
 import com.example.cosmocatsintergalacticmarketplace.service.exception.CategoryNotFoundException;
 import com.example.cosmocatsintergalacticmarketplace.service.mapper.ServiceCategoryMapper;
+import jakarta.persistence.PersistenceException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,15 +43,24 @@ public class CategoryServiceImpl implements CategoryService {
         if (categoryRepository.existsByName(category.getName())) {
             throw new CategoryConflictException(category.getName());
         }
-        return serviceCategoryMapper.toCategory(
-                categoryRepository.save(
-                        serviceCategoryMapper.toCategoryEntity(category)));
+        try {
+            return serviceCategoryMapper.toCategory(
+                    categoryRepository.save(
+                            serviceCategoryMapper.toCategoryEntity(category)));
+        } catch (Exception e) {
+            throw new PersistenceException(e);
+        }
+
     }
 
     @Override
     @Transactional
     public void deleteCategoryById(Long id) {
-        categoryRepository.deleteById(id);
+        try {
+            categoryRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new PersistenceException(e);
+        }
     }
 
     @Override
@@ -59,7 +69,11 @@ public class CategoryServiceImpl implements CategoryService {
         if(!categoryRepository.existsById(category.getId())) {
             throw new CategoryNotFoundException(category.getId());
         }
-        return serviceCategoryMapper.toCategory(
-                categoryRepository.save(serviceCategoryMapper.toCategoryEntity(category)));
+        try {
+            return serviceCategoryMapper.toCategory(
+                    categoryRepository.save(serviceCategoryMapper.toCategoryEntity(category)));
+        } catch (Exception e) {
+            throw new PersistenceException(e);
+        }
     }
 }
