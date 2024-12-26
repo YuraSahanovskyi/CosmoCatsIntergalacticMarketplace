@@ -19,7 +19,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")  // Перевірка ролі без префікса ROLE_
+                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/**").authenticated())
                 .oauth2Login(withDefaults())
                 .oauth2ResourceServer(oauth2 -> oauth2
