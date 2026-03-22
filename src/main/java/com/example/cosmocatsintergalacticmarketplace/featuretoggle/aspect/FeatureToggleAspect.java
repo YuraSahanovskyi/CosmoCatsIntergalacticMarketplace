@@ -23,8 +23,8 @@ public class FeatureToggleAspect {
 
     private void checkToggle(FeatureToggle featureToggle) {
         FeatureToggles toggle = featureToggle.value();
-        if (!featureToggleService.check(toggle.getFeatureName())) {
-            throw new FeatureToggleNotEnabledException(toggle.getFeatureName());
+        if (!featureToggleService.check(toggle.name())) {
+            throw new FeatureToggleNotEnabledException(toggle.name());
         }
     }
 }

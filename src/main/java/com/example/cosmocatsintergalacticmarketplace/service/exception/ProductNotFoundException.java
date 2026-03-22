@@ -1,8 +1,8 @@
 package com.example.cosmocatsintergalacticmarketplace.service.exception;
 
 public class ProductNotFoundException extends RuntimeException {
-    private static final String DEFAULT_MESSAGE = "Product with id %s not found";
-    public ProductNotFoundException(Long customerId) {
-        super(String.format(DEFAULT_MESSAGE, customerId));
+    private static final String PRODUCT_NOT_FOUND_MESSAGE = "Product with id %s not found";
+    public ProductNotFoundException(Long productId) {
+        super(String.format(PRODUCT_NOT_FOUND_MESSAGE, productId));
     }
 }

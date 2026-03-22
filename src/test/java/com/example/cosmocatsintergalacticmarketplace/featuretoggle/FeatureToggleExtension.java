@@ -21,10 +21,10 @@ public class FeatureToggleExtension implements BeforeEachCallback, AfterEachCall
 
             if (method.isAnnotationPresent(EnabledFeatureToggle.class)) {
                 EnabledFeatureToggle enabledFeatureToggleAnnotation = method.getAnnotation(EnabledFeatureToggle.class);
-                featureToggleService.enable(enabledFeatureToggleAnnotation.value().getFeatureName());
+                featureToggleService.enable(enabledFeatureToggleAnnotation.value().name());
             } else if (method.isAnnotationPresent(DisabledFeatureToggle.class)) {
                 DisabledFeatureToggle disabledFeatureToggleAnnotation = method.getAnnotation(DisabledFeatureToggle.class);
-                featureToggleService.disable(disabledFeatureToggleAnnotation.value().getFeatureName());
+                featureToggleService.disable(disabledFeatureToggleAnnotation.value().name());
             }
         });
     }
@@ -47,10 +47,10 @@ public class FeatureToggleExtension implements BeforeEachCallback, AfterEachCall
     private String getFeatureName(Method method) {
         if (method.isAnnotationPresent(EnabledFeatureToggle.class)) {
             EnabledFeatureToggle enabledFeatureToggleAnnotation = method.getAnnotation(EnabledFeatureToggle.class);
-            return enabledFeatureToggleAnnotation.value().getFeatureName();
+            return enabledFeatureToggleAnnotation.value().name();
         } else if (method.isAnnotationPresent(DisabledFeatureToggle.class)) {
             DisabledFeatureToggle disabledFeatureToggleAnnotation = method.getAnnotation(DisabledFeatureToggle.class);
-            return disabledFeatureToggleAnnotation.value().getFeatureName();
+            return disabledFeatureToggleAnnotation.value().name();
         }
         return null;
     }

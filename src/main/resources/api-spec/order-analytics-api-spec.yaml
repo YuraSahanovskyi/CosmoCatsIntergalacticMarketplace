@@ -1,0 +1,70 @@
+openapi: 3.0.0
+info:
+  title: Order analytics API
+  description: API for managing order analytics
+  version: 1.0.0
+
+paths:
+  /api/v1/admin/order-analytics/{customer}:
+    get:
+      summary: Get order analytics by customer
+      tags:
+        - Order analytics
+      parameters:
+        - in: path
+          name: customer
+          required: true
+          schema:
+            type: string
+          description: Name of the customer
+      responses:
+        '200':
+          description: Order analytics for customer found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderAnalyticListDto'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    OrderAnalyticEntry:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+          description: Date and time when the order was created
+        status:
+          type: string
+          maxLength: 100
+          description: Status of the order
+
+    OrderAnalyticListDto:
+      type: object
+      properties:
+        orderEntries:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderAnalyticEntry'
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP status code
+        error:
+          type: string
+          description: Error type or message
+        message:
+          type: string
+          description: Detailed error message
+        path:
+          type: string
+          description: Request path where the error occurred

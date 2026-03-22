@@ -1,48 +1,40 @@
 openapi: 3.0.0
 info:
-  title: Product API
-  description: API for managing product data
+  title: Category API
+  description: API for managing categories
   version: 1.0.0
 
 paths:
-  /api/v1/products:
+  /api/v1/categories:
     get:
-      summary: Get all products
+      summary: Get all categories
       tags:
-        - Products
-      parameters:
-        - in: query
-          name: code
-          required: false
-          schema:
-            type: string
-            enum: [ USD, EUR, GBP ]
-          description: Currency code for the price
+        - Categories
       responses:
         '200':
-          description: List of all products
+          description: List of all categories
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductListDto'
+                $ref: '#/components/schemas/CategoryListDto'
     post:
-      summary: Create a new product
+      summary: Create a new category
       tags:
-        - Products
+        - Category
       requestBody:
-        description: Product data to create a new product
+        description: Category data to create a new category
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProductDto'
+              $ref: '#/components/schemas/CategoryDto'
       responses:
         '201':
-          description: Product created successfully
+          description: Category created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductEntry'
+                $ref: '#/components/schemas/CategoryEntry'
         '400':
           description: Invalid input
           content:
@@ -50,69 +42,62 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '409':
-          description: Product conflict
+          description: Category conflict
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  /api/v1/products/{id}:
+  /api/v1/categories/{id}:
     get:
-      summary: Get product by ID
+      summary: Get category by ID
       tags:
-        - Products
+        - Categories
       parameters:
         - in: path
           name: id
           required: true
           schema:
             type: integer
-          description: ID of the product to retrieve
-        - in: query
-          name: code
-          required: false
-          schema:
-            type: string
-            enum: [ USD, EUR, GBP ]
-          description: Currency code for the price
+          description: ID of the category to retrieve
       responses:
         '200':
-          description: Product found
+          description: Category found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductEntry'
+                $ref: '#/components/schemas/CategoryEntry'
         '404':
-          description: Product not found
+          description: Category not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
     put:
-      summary: Update an existing product
+      summary: Update an existing category
       tags:
-        - Products
+        - Categories
       parameters:
         - in: path
           name: id
           required: true
           schema:
             type: integer
-          description: ID of the product to update
+          description: ID of the category to update
       requestBody:
-        description: Product data to update
+        description: Category data to update
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProductDto'
+              $ref: '#/components/schemas/CategoryDto'
       responses:
         '201':
-          description: Product updated successfully
+          description: Category updated successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductEntry'
+                $ref: '#/components/schemas/CategoryEntry'
         '400':
           description: Invalid input
           content:
@@ -120,82 +105,68 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
-          description: Product not found
+          description: Category not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '409':
-          description: Product conflict
+          description: Category conflict
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
     delete:
-      summary: Delete a product by ID
+      summary: Delete a category by ID
       tags:
-        - Products
+        - Categories
       parameters:
         - in: path
           name: id
           required: true
           schema:
             type: integer
-          description: ID of the product to delete
+          description: ID of the category to delete
       responses:
         '204':
-          description: Product deleted successfully
+          description: Category deleted successfully
 
 components:
   schemas:
-    ProductEntry:
+    CategoryEntry:
       type: object
       properties:
         id:
           type: integer
-          description: Unique identifier of the product
+          description: Unique identifier of the category
         name:
           type: string
           maxLength: 100
-          description: Name of the product
+          description: Name of the category
         description:
           type: string
           maxLength: 255
-          description: Description of the product
-        price:
-          type: number
-          description: Price of the product
-          example: "19.99"
-        categoryId:
-          type: number
-          description: ID of the category
+          description: Description of the category
 
-    ProductListDto:
+    CategoryListDto:
       type: object
       properties:
-        productEntries:
+        categoryEntries:
           type: array
           items:
-            $ref: '#/components/schemas/ProductEntry'
+            $ref: '#/components/schemas/CategoryEntry'
 
-    ProductDto:
+    CategoryDto:
       type: object
       properties:
         name:
           type: string
           maxLength: 100
-          description: Name of the product
+          description: Name of the category
         description:
           type: string
           maxLength: 255
-          description: Description of the product
-        price:
-          type: number
-          description: Price of the product
-          example: "19.99"
-        categoryId:
-          type: number
-          description: ID of the category
+          description: Description of the category
 
     ErrorResponse:
       type: object

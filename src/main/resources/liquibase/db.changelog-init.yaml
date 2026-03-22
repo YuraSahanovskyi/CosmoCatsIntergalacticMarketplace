@@ -1,0 +1,164 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: yurasahanovskyi
+      changes:
+        - createTable:
+            tableName: categories
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+
+  - changeSet:
+      id: 2
+      author: yurasahanovskyi
+      changes:
+        - createTable:
+            tableName: "orders"
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: customer_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+                    defaultValueComputed: "CURRENT_TIMESTAMP"
+              - column:
+                  name: status
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 3
+      author: yurasahanovskyi
+      changes:
+        - createTable:
+            tableName: products
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: decimal(10,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category_id
+                  type: bigint
+                  constraints:
+                    nullable: true
+
+  - changeSet:
+      id: 4
+      author: yurasahanovskyi
+      changes:
+        - createTable:
+            tableName: order_product
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: order_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: quantity
+                  type: integer
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 5
+      author: yurasahanovskyi
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: products
+            baseColumnNames: category_id
+            constraintName: fk_product_category
+            referencedTableName: categories
+            referencedColumnNames: id
+
+  - changeSet:
+      id: 6
+      author: yurasahanovskyi
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: order_product
+            baseColumnNames: order_id
+            constraintName: fk_order_product_order
+            referencedTableName: "orders"
+            referencedColumnNames: id
+
+  - changeSet:
+      id: 7
+      author: yurasahanovskyi
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: order_product
+            baseColumnNames: product_id
+            constraintName: fk_order_product_product
+            referencedTableName: products
+            referencedColumnNames: id
+
+  - changeSet:
+      id: 8
+      author: yurasahanovskyi
+      changes:
+        - addUniqueConstraint:
+            columnNames: name
+            constraintName: uc_product_name
+            tableName: products
+
+  - changeSet:
+      id: 9
+      author: yurasahanovskyi
+      changes:
+        - addUniqueConstraint:
+            columnNames: name
+            constraintName: uc_category_name
+            tableName: categories

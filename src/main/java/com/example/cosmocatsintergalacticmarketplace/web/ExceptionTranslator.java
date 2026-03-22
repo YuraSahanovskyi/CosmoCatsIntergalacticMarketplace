@@ -1,9 +1,9 @@
 package com.example.cosmocatsintergalacticmarketplace.web;
 
 import com.example.cosmocatsintergalacticmarketplace.featuretoggle.exception.FeatureToggleNotEnabledException;
-import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductConflictException;
-import com.example.cosmocatsintergalacticmarketplace.service.exception.ProductNotFoundException;
+import com.example.cosmocatsintergalacticmarketplace.service.exception.*;
 import jakarta.annotation.Nullable;
+import jakarta.persistence.PersistenceException;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -24,14 +24,19 @@ public class ExceptionTranslator extends ResponseEntityExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
-    @ExceptionHandler(ProductNotFoundException.class)
-    public ProblemDetail handleProductNotFoundException(ProductNotFoundException ex) {
+    @ExceptionHandler({ProductNotFoundException.class, CategoryNotFoundException.class, OrderNotFoundException.class})
+    public ProblemDetail handleNotFoundException(RuntimeException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
-    @ExceptionHandler(ProductConflictException.class)
-    public ProblemDetail handleProductAlreadyExistsException(ProductConflictException ex) {
+    @ExceptionHandler({ProductConflictException.class, CategoryConflictException.class})
+    public ProblemDetail handleConflictException(RuntimeException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    @ExceptionHandler({PersistenceException.class})
+    public ProblemDetail handlePersistenceException(RuntimeException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @Override

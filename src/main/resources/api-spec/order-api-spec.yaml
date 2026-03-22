@@ -1,48 +1,40 @@
 openapi: 3.0.0
 info:
-  title: Product API
-  description: API for managing product data
+  title: Order API
+  description: API for managing orders
   version: 1.0.0
 
 paths:
-  /api/v1/products:
+  /api/v1/orders:
     get:
-      summary: Get all products
+      summary: Get all orders
       tags:
-        - Products
-      parameters:
-        - in: query
-          name: code
-          required: false
-          schema:
-            type: string
-            enum: [ USD, EUR, GBP ]
-          description: Currency code for the price
+        - Orders
       responses:
         '200':
-          description: List of all products
+          description: List of all orders
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductListDto'
+                $ref: '#/components/schemas/OrderListDto'
     post:
-      summary: Create a new product
+      summary: Create a new order
       tags:
-        - Products
+        - Orders
       requestBody:
-        description: Product data to create a new product
+        description: Order data to create a new order
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProductDto'
+              $ref: '#/components/schemas/OrderDto'
       responses:
         '201':
-          description: Product created successfully
+          description: Order created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductEntry'
+                $ref: '#/components/schemas/OrderEntry'
         '400':
           description: Invalid input
           content:
@@ -50,69 +42,62 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '409':
-          description: Product conflict
+          description: Order conflict
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  /api/v1/products/{id}:
+  /api/v1/orders/{id}:
     get:
-      summary: Get product by ID
+      summary: Get order by ID
       tags:
-        - Products
+        - Orders
       parameters:
         - in: path
           name: id
           required: true
           schema:
             type: integer
-          description: ID of the product to retrieve
-        - in: query
-          name: code
-          required: false
-          schema:
-            type: string
-            enum: [ USD, EUR, GBP ]
-          description: Currency code for the price
+          description: ID of the order to retrieve
       responses:
         '200':
-          description: Product found
+          description: Order found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductEntry'
+                $ref: '#/components/schemas/OrderEntry'
         '404':
-          description: Product not found
+          description: Order not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
     put:
-      summary: Update an existing product
+      summary: Update an existing order
       tags:
-        - Products
+        - Orders
       parameters:
         - in: path
           name: id
           required: true
           schema:
             type: integer
-          description: ID of the product to update
+          description: ID of the order to update
       requestBody:
-        description: Product data to update
+        description: Order data to update
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProductDto'
+              $ref: '#/components/schemas/OrderDto'
       responses:
         '201':
-          description: Product updated successfully
+          description: Order updated successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductEntry'
+                $ref: '#/components/schemas/OrderEntry'
         '400':
           description: Invalid input
           content:
@@ -120,82 +105,82 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '404':
-          description: Product not found
+          description: Order not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '409':
-          description: Product conflict
+          description: Order conflict
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
     delete:
-      summary: Delete a product by ID
+      summary: Delete an order by ID
       tags:
-        - Products
+        - Orders
       parameters:
         - in: path
           name: id
           required: true
           schema:
             type: integer
-          description: ID of the product to delete
+          description: ID of the order to delete
       responses:
         '204':
-          description: Product deleted successfully
+          description: Order deleted successfully
 
 components:
   schemas:
-    ProductEntry:
+    OrderEntry:
       type: object
       properties:
         id:
           type: integer
-          description: Unique identifier of the product
-        name:
+          description: Unique identifier of the order
+        customerName:
           type: string
           maxLength: 100
-          description: Name of the product
-        description:
+          description: Name of the customer
+        date:
           type: string
-          maxLength: 255
-          description: Description of the product
-        price:
-          type: number
-          description: Price of the product
-          example: "19.99"
-        categoryId:
-          type: number
-          description: ID of the category
+          format: date-time
+          description: Date and time when the order was created
+        status:
+          type: string
+          maxLength: 100
+          description: Status of the order
+        items:
+          type: object
+          additionalProperties:
+            type: integer
+          description: Map of product IDs to quantities
 
-    ProductListDto:
+    OrderListDto:
       type: object
       properties:
-        productEntries:
+        orderEntries:
           type: array
           items:
-            $ref: '#/components/schemas/ProductEntry'
+            $ref: '#/components/schemas/OrderEntry'
 
-    ProductDto:
+    OrderDto:
       type: object
       properties:
-        name:
+        customerName:
           type: string
           maxLength: 100
-          description: Name of the product
-        description:
+          description: Name of the customer
+        status:
           type: string
-          maxLength: 255
-          description: Description of the product
-        price:
-          type: number
-          description: Price of the product
-          example: "19.99"
-        categoryId:
-          type: number
-          description: ID of the category
+          maxLength: 100
+          description: Status of the order
+        items:
+          type: object
+          additionalProperties:
+            type: integer
+          description: Map of product IDs to quantities
 
     ErrorResponse:
       type: object
