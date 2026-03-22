@@ -12,4 +12,5 @@ public class Product {
     String name;
     String description;
     BigDecimal price;
+    Category category;
 }

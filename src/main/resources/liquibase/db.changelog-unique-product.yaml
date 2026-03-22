@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 10
+      author: yurasahanovskyi
+      changes:
+        - addUniqueConstraint:
+            columnNames: "name, category_id"
+            constraintName: "unique_product_in_category"
+            tableName: "products"
+        - dropUniqueConstraint:
+            tableName: products
+            constraintName: uc_product_name

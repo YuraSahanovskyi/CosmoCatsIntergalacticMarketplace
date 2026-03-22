@@ -19,7 +19,7 @@ ext {
     minimumCoveragePerFile = 0.5
     filesExcludedFromCoverage = [
             "**/*MarketplaceApplication.*",
-            "**/config/*Configuration.*",
+            "**/config/**",
             "**/domain/**",
             "**/dto/**",
             "**Order**", //Not implemented
@@ -57,7 +57,12 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.6.2'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.2'
     testImplementation 'org.projectlombok:lombok'
-
+    implementation 'org.springframework.boot:spring-boot-starter-aop:3.3.5'
+    implementation 'org.liquibase:liquibase-core:4.30.0'
+    implementation 'org.postgresql:postgresql:42.7.4'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
 }
 
 tasks.named('test') {

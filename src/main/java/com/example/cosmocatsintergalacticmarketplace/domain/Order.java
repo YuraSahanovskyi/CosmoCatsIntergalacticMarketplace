@@ -1,12 +1,13 @@
 package com.example.cosmocatsintergalacticmarketplace.domain;
 
 import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
+
 
 import java.time.LocalDateTime;
 import java.util.Map;
 
-@Value
+@Data
 @Builder
 public class Order {
     Long id;

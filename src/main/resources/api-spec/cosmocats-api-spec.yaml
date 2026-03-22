@@ -1,0 +1,66 @@
+openapi: 3.0.0
+info:
+  title: CosmoCats API
+  description: API for managing cosmo cats data
+  version: 1.0.0
+
+paths:
+  /api/v1/cats:
+    get:
+      summary: Get all Cosmo cast
+      tags:
+        - CosmoCats
+      responses:
+        '200':
+          description: List of all cats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CosmoCatListDto'
+        '404':
+          description: Feature toggle not enabled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    CosmoCatEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the cat
+        name:
+          type: string
+          maxLength: 100
+          description: Name of the cat
+        color:
+          type: string
+          maxLength: 100
+          description: Description of the cat
+
+    CosmoCatListDto:
+      type: object
+      properties:
+        productEntries:
+          type: array
+          items:
+            $ref: '#/components/schemas/CosmoCatEntry'
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP status code
+        error:
+          type: string
+          description: Error type or message
+        message:
+          type: string
+          description: Detailed error message
+        path:
+          type: string
+          description: Request path where the error occurred

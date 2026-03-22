@@ -49,6 +49,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Product conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /api/v1/products/{id}:
     get:
@@ -119,6 +125,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Product conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       summary: Delete a product by ID
       tags:
@@ -154,6 +166,9 @@ components:
           type: number
           description: Price of the product
           example: "19.99"
+        categoryId:
+          type: number
+          description: ID of the category
 
     ProductListDto:
       type: object
@@ -168,14 +183,19 @@ components:
       properties:
         name:
           type: string
+          maxLength: 100
           description: Name of the product
         description:
           type: string
+          maxLength: 255
           description: Description of the product
         price:
           type: number
           description: Price of the product
           example: "19.99"
+        categoryId:
+          type: number
+          description: ID of the category
 
     ErrorResponse:
       type: object

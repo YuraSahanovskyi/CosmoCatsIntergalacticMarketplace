@@ -1,0 +1,185 @@
+openapi: 3.0.0
+info:
+  title: Category API
+  description: API for managing categories
+  version: 1.0.0
+
+paths:
+  /api/v1/categories:
+    get:
+      summary: Get all categories
+      tags:
+        - Categories
+      responses:
+        '200':
+          description: List of all categories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryListDto'
+    post:
+      summary: Create a new category
+      tags:
+        - Category
+      requestBody:
+        description: Category data to create a new category
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryDto'
+      responses:
+        '201':
+          description: Category created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryEntry'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Category conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/categories/{id}:
+    get:
+      summary: Get category by ID
+      tags:
+        - Categories
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID of the category to retrieve
+      responses:
+        '200':
+          description: Category found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryEntry'
+        '404':
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      summary: Update an existing category
+      tags:
+        - Categories
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID of the category to update
+      requestBody:
+        description: Category data to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryDto'
+      responses:
+        '201':
+          description: Category updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryEntry'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Category conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      summary: Delete a category by ID
+      tags:
+        - Categories
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID of the category to delete
+      responses:
+        '204':
+          description: Category deleted successfully
+
+components:
+  schemas:
+    CategoryEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the category
+        name:
+          type: string
+          maxLength: 100
+          description: Name of the category
+        description:
+          type: string
+          maxLength: 255
+          description: Description of the category
+
+    CategoryListDto:
+      type: object
+      properties:
+        categoryEntries:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryEntry'
+
+    CategoryDto:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+          description: Name of the category
+        description:
+          type: string
+          maxLength: 255
+          description: Description of the category
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP status code
+        error:
+          type: string
+          description: Error type or message
+        message:
+          type: string
+          description: Detailed error message
+        path:
+          type: string
+          description: Request path where the error occurred
