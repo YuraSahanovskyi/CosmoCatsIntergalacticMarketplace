@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -55,17 +56,19 @@ public class ProductIT extends AbstractIT {
 
     @Test
     @SneakyThrows
+    @WithMockUser
     void shouldGetAllProducts() throws Exception {
         saveProductEntity(saveCategoryEntity());
-        mockMvc.perform(get("/api/v1/products"))
+        mockMvc.perform(get("/api/v1/admin/products"))
                 .andExpect(status().isOk());
     }
 
     @Test
     @SneakyThrows
+    @WithMockUser
     void shouldGetProductById() throws Exception {
         ProductEntity productEntity = saveProductEntity(saveCategoryEntity());
-        mockMvc.perform(get("/api/v1/products/" + productEntity.getId()))
+        mockMvc.perform(get("/api/v1/admin/products/" + productEntity.getId()))
                 .andExpect(status().isOk());
     }
 
@@ -88,10 +91,11 @@ public class ProductIT extends AbstractIT {
 
     @Test
     @SneakyThrows
+    @WithMockUser
     void shouldSaveProduct() throws Exception {
         CategoryEntity categoryEntity = saveCategoryEntity();
         ProductDto productDto = getProductDto(categoryEntity.getId());
-        mockMvc.perform(post("/api/v1/products")
+        mockMvc.perform(post("/api/v1/admin/products")
                 .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(productDto)))
                 .andExpect(status().isCreated());
@@ -108,11 +112,12 @@ public class ProductIT extends AbstractIT {
 
     @Test
     @SneakyThrows
+    @WithMockUser
     void shouldUpdateProduct() throws Exception {
         CategoryEntity categoryEntity = saveCategoryEntity();
         ProductEntity productEntity = saveProductEntity(categoryEntity);
         ProductDto productDto = getUpdatedProductDto(categoryEntity.getId());
-        mockMvc.perform(put("/api/v1/products/" + productEntity.getId())
+        mockMvc.perform(put("/api/v1/admin/products/" + productEntity.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(productDto)))
                 .andExpect(status().isCreated());
@@ -129,20 +134,22 @@ public class ProductIT extends AbstractIT {
 
     @Test
     @SneakyThrows
+    @WithMockUser
     void shouldDeleteProduct() throws Exception {
         ProductEntity productEntity = saveProductEntity(saveCategoryEntity());
-        mockMvc.perform(delete("/api/v1/products/" + productEntity.getId()))
+        mockMvc.perform(delete("/api/v1/admin/products/" + productEntity.getId()))
                 .andExpect(status().isNoContent());
         assertFalse(productRepository.existsById(productEntity.getId()));
     }
 
     @Test
     @SneakyThrows
+    @WithMockUser
     void shouldGetConflict() throws Exception {
         CategoryEntity categoryEntity = saveCategoryEntity();
         saveProductEntity(categoryEntity);
         ProductDto productDto = getProductDto(categoryEntity.getId());
-        mockMvc.perform(post("/api/v1/products")
+        mockMvc.perform(post("/api/v1/admin/products")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(productDto)))
                 .andExpect(status().isConflict());
@@ -150,17 +157,19 @@ public class ProductIT extends AbstractIT {
 
     @Test
     @SneakyThrows
+    @WithMockUser
     void shouldGetNotFound() throws Exception {
-        mockMvc.perform(get("/api/v1/products/1"))
+        mockMvc.perform(get("/api/v1/admin/products/1"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     @SneakyThrows
+    @WithMockUser
     void shouldGetBadRequest() throws Exception {
         CategoryEntity categoryEntity = saveCategoryEntity();
         ProductDto productDto = getInvalidProductDto(categoryEntity.getId());
-        mockMvc.perform(post("/api/v1/products")
+        mockMvc.perform(post("/api/v1/admin/products")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(productDto)))
                 .andExpect(status().isBadRequest());
