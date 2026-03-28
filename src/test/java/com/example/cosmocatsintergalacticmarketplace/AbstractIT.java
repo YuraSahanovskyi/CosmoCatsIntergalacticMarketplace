@@ -2,6 +2,7 @@ package com.example.cosmocatsintergalacticmarketplace;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.GenericContainer;
@@ -9,6 +10,7 @@ import static java.lang.String.format;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext
+@ActiveProfiles("no-auth")
 public abstract class AbstractIT {
     private static final int POSTGRES_PORT = 5432;
 

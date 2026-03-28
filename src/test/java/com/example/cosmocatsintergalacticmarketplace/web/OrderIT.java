@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -70,11 +71,12 @@ public class OrderIT extends AbstractIT {
 
     @Test
     @SneakyThrows
+    @WithMockUser
     void shouldGetAllOrders() throws Exception {
         CategoryEntity categoryEntity = saveCategoryEntity();
         ProductEntity productEntity = saveProductEntity(categoryEntity);
         saveOrderEntity(productEntity);
-        mockMvc.perform(get("/api/v1/orders"))
+        mockMvc.perform(get("/api/v1/internal/orders"))
                 .andExpect(status().isOk());
     }
 
@@ -111,19 +113,21 @@ public class OrderIT extends AbstractIT {
 
     @Test
     @SneakyThrows
+    @WithMockUser
     void shouldGetOrderById() throws Exception {
         ProductEntity productEntity = saveProductEntity(saveCategoryEntity());
         OrderEntity orderEntity = saveOrderEntity(productEntity);
-        mockMvc.perform(get("/api/v1/orders/" + orderEntity.getId()))
+        mockMvc.perform(get("/api/v1/internal/orders/" + orderEntity.getId()))
                 .andExpect(status().isOk());
     }
 
     @Test
     @SneakyThrows
+    @WithMockUser
     void shouldSaveOrder() throws Exception {
         ProductEntity productEntity = saveProductEntity(saveCategoryEntity());
         OrderDto orderDto = getOrderDto(productEntity.getId());
-        mockMvc.perform(post("/api/v1/orders")
+        mockMvc.perform(post("/api/v1/internal/orders")
                 .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(orderDto)))
                 .andExpect(status().isCreated());
@@ -140,11 +144,12 @@ public class OrderIT extends AbstractIT {
 
     @Test
     @SneakyThrows
+    @WithMockUser
     void shouldUpdateOrder() throws Exception {
         ProductEntity productEntity = saveProductEntity(saveCategoryEntity());
         OrderEntity orderEntity = saveOrderEntity(productEntity);
         OrderDto orderDto = getUpdatedOrderDto(productEntity.getId());
-        mockMvc.perform(put("/api/v1/orders/" + orderEntity.getId())
+        mockMvc.perform(put("/api/v1/internal/orders/" + orderEntity.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(orderDto)))
                 .andExpect(status().isCreated());
@@ -162,19 +167,21 @@ public class OrderIT extends AbstractIT {
 
     @Test
     @SneakyThrows
+    @WithMockUser
     void shouldDeleteOrder() throws Exception {
         OrderEntity orderEntity = saveOrderEntity(
                 saveProductEntity(
                         saveCategoryEntity()));
-        mockMvc.perform(delete("/api/v1/orders/" + orderEntity.getId()))
+        mockMvc.perform(delete("/api/v1/internal/orders/" + orderEntity.getId()))
                 .andExpect(status().isNoContent());
         assertFalse(orderRepository.existsById(orderEntity.getId()));
     }
 
     @Test
     @SneakyThrows
+    @WithMockUser
     void shouldGetNotFound() throws Exception {
-        mockMvc.perform(get("/api/v1/orders/1"))
+        mockMvc.perform(get("/api/v1/internal/orders/1"))
                 .andExpect(status().isNotFound());
     }
 }

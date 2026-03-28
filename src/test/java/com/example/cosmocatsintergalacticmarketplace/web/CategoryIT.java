@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.reset;
@@ -43,17 +44,19 @@ public class CategoryIT extends AbstractIT {
 
     @Test
     @SneakyThrows
+    @WithMockUser
     void shouldGetAllCategories() throws Exception {
         saveCategoryEntity();
-        mockMvc.perform(get("/api/v1/categories"))
+        mockMvc.perform(get("/api/v1/admin/categories"))
                 .andExpect(status().isOk());
     }
 
     @Test
     @SneakyThrows
+    @WithMockUser
     void shouldGetCategoryByID() throws Exception {
         CategoryEntity category = saveCategoryEntity();
-        mockMvc.perform(get("/api/v1/categories/" + category.getId()))
+        mockMvc.perform(get("/api/v1/admin/categories/" + category.getId()))
                 .andExpect(status().isOk());
     }
 
@@ -63,9 +66,10 @@ public class CategoryIT extends AbstractIT {
 
     @Test
     @SneakyThrows
+    @WithMockUser
     void shouldSaveCategory() throws Exception {
         CategoryDto categoryDto = getCategoryDto();
-        mockMvc.perform(post("/api/v1/categories")
+        mockMvc.perform(post("/api/v1/admin/categories")
                 .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(categoryDto)))
                 .andExpect(status().isCreated());
@@ -80,10 +84,11 @@ public class CategoryIT extends AbstractIT {
 
     @Test
     @SneakyThrows
+    @WithMockUser
     void shouldUpdateCategory() throws Exception {
         CategoryEntity categoryEntity = saveCategoryEntity();
         CategoryDto categoryDto = getUpdatedCategoryDto();
-        mockMvc.perform(put("/api/v1/categories/" + categoryEntity.getId())
+        mockMvc.perform(put("/api/v1/admin/categories/" + categoryEntity.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(categoryDto)))
                 .andExpect(status().isCreated());
@@ -105,19 +110,21 @@ public class CategoryIT extends AbstractIT {
 
     @Test
     @SneakyThrows
+    @WithMockUser
     void shouldDeleteCategory() throws Exception {
         CategoryEntity category = saveCategoryEntity();
-        mockMvc.perform(delete("/api/v1/categories/" + category.getId()))
+        mockMvc.perform(delete("/api/v1/admin/categories/" + category.getId()))
                 .andExpect(status().isNoContent());
         assertFalse(categoryRepository.existsById(category.getId()));
     }
 
     @Test
     @SneakyThrows
+    @WithMockUser
     void shouldGetConflict() throws Exception {
         saveCategoryEntity();
         CategoryDto categoryDto = getCategoryDto();
-        mockMvc.perform(post("/api/v1/categories")
+        mockMvc.perform(post("/api/v1/admin/categories")
                 .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(categoryDto)))
                 .andExpect(status().isConflict());
@@ -125,8 +132,9 @@ public class CategoryIT extends AbstractIT {
 
     @Test
     @SneakyThrows
+    @WithMockUser
     void shouldGetNotFound() throws Exception {
-        mockMvc.perform(get("/api/v1/categories/1"))
+        mockMvc.perform(get("/api/v1/admin/categories/1"))
                 .andExpect(status().isNotFound());
     }
 
